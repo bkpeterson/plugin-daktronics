@@ -26,6 +26,8 @@ DAKFilter::DAKFilter(obs_data_t *settings, obs_source_t *source) : _source(sourc
 {
 	_filterType = DAKFilter::DAK_TEXT;
 	_internalValue = "";
+	_filterChanged = false;
+	_paramChanged = false;
 	Update(this, settings);
 }
 
@@ -261,12 +263,11 @@ bool DAKFilter::DAKFilterChanged(void *data, obs_properties_t *props, obs_proper
 {
 	UNUSED_PARAMETER(property);
 
-	if(_filterChanged)
+	DAKFilter *instance = (DAKFilter *)data;
+	if(instance->_filterChanged)
 		return true;
 	else
-		_filterChanged = true;
-
-	DAKFilter *instance = (DAKFilter *)data;
+		instance->_filterChanged = true;
 
 	uint32_t filter_type = (uint32_t)obs_data_get_int(settings, "dak_filter_list");
 	obs_property_t *list = obs_properties_get(props, "dak_param_list");
@@ -297,7 +298,7 @@ bool DAKFilter::DAKFilterChanged(void *data, obs_properties_t *props, obs_proper
 		break;
 	}
 
-	_filterChanged = false;
+	instance->_filterChanged = false;
 	return true;
 }
 
@@ -305,17 +306,17 @@ bool DAKFilter::DAKParamChanged(void *data, obs_properties_t *props, obs_propert
 {
 	UNUSED_PARAMETER(property);
 
-	if(_paramChanged)
-		return true;
-	else
-		_paramChanged = true;
 
 	DAKFilter *instance = (DAKFilter *)data;
+	if(instance->_paramChanged)
+		return true;
+	else
+		instance->_paramChanged = true;
 
 	std::string paramName = obs_data_get_string(settings, "dak_param_list");
 
 	instance->doColorProps(props, paramName);
 
-	_paramChanged = false;
+	instance->_paramChanged = false;
 	return true;
 }
