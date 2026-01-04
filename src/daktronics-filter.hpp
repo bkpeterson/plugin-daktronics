@@ -30,8 +30,11 @@ public:
 	static obs_properties_t *GetProperties(void *data);
 	static void GetDefaults(obs_data_t *settings);
 
+	void _render();
+	obs_properties_t *_getProperties();
 	void populateParams(obs_property_t *list, obs_property_type paramType);
 	void doColorProps(obs_properties_t *props, std::string paramName);
+	bool _DAKSportChanged(obs_properties_t *props, obs_property_t *property, obs_data_t *settings);
 
 	static bool DAKSportChanged(obs_properties_t *props, obs_property_t *property, obs_data_t *settings);
 	static bool DAKFilterChanged(void *data, obs_properties_t *props, obs_property_t *property,
@@ -41,6 +44,7 @@ public:
 
 private:
 	obs_source_t *_source;
+	obs_properties_t *props;
 
 	std::string _sport;
 	uint32_t _index;

@@ -28,6 +28,7 @@ DAKFilter::DAKFilter(obs_data_t *settings, obs_source_t *source) : _source(sourc
 	_internalValue = "";
 	_filterChanged = false;
 	_paramChanged = false;
+	props = nullptr;
 	Update(this, settings);
 }
 
@@ -117,10 +118,14 @@ std::string DAKFilter::GetSport()
 void DAKFilter::Render(void *data, gs_effect_t *effect)
 {
 	UNUSED_PARAMETER(effect);
-	UNUSED_PARAMETER(data);
 
-	auto instance = static_cast<DAKFilter *>(data);
-	obs_source_skip_video_filter(instance->_source);
+	auto &instance = *static_cast<DAKFilter *>(data);
+	instance._render();
+}
+
+void DAKFilter::_render()
+{
+	obs_source_skip_video_filter(_source);
 }
 
 void DAKFilter::Update(void *data, obs_data_t *settings)
@@ -167,37 +172,45 @@ void DAKFilter::GetDefaults(obs_data_t *settings)
 
 obs_properties_t *DAKFilter::GetProperties(void *data)
 {
-	obs_properties_t *props = obs_properties_create();
+	auto &instance = *static_cast<DAKFilter *>(data);
+	return instance._getProperties();
+}
 
-	obs_property_t *sport_type =
-		obs_properties_add_list(props, "dak_sport_type", "Sport", OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
+obs_properties_t *DAKFilter::_getProperties()
+{
+	if(props == nullptr) {
+		props = obs_properties_create();
 
-	DAKDataUtils::PopulateSportProps(sport_type);
+		obs_property_t *sport_type =
+			obs_properties_add_list(props, "dak_sport_type", "Sport", OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
-	obs_property_set_modified_callback(sport_type, DAKFilter::DAKSportChanged);
+		DAKDataUtils::PopulateSportProps(sport_type);
 
-	obs_properties_add_list(props, "dak_field_list", "Scoreboard Data Field", OBS_COMBO_TYPE_LIST,
-				OBS_COMBO_FORMAT_INT);
+		obs_property_set_modified_callback(sport_type, DAKFilter::DAKSportChanged);
 
-	obs_property_t *filter_type = obs_properties_add_list(props, "dak_filter_list", "Filter Type",
-							      OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
-	obs_property_list_add_int(filter_type, "Show/Hide", DAKFilter::DAK_VISIBLE);
-	obs_property_list_add_int(filter_type, "Update Text", DAKFilter::DAK_TEXT);
-	obs_property_list_add_int(filter_type, "Change Color", DAKFilter::DAK_COLOR);
+		obs_properties_add_list(props, "dak_field_list", "Scoreboard Data Field", OBS_COMBO_TYPE_LIST,
+					OBS_COMBO_FORMAT_INT);
 
-	obs_property_set_modified_callback2(filter_type, DAKFilter::DAKFilterChanged, data);
+		obs_property_t *filter_type = obs_properties_add_list(props, "dak_filter_list", "Filter Type",
+									OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
+		obs_property_list_add_int(filter_type, "Show/Hide", DAKFilter::DAK_VISIBLE);
+		obs_property_list_add_int(filter_type, "Update Text", DAKFilter::DAK_TEXT);
+		obs_property_list_add_int(filter_type, "Change Color", DAKFilter::DAK_COLOR);
 
-	obs_property_t *param_type = obs_properties_add_list(props, "dak_param_list", "Property to Modify",
-							     OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
+		obs_property_set_modified_callback2(filter_type, DAKFilter::DAKFilterChanged, this);
 
-	obs_property_set_modified_callback2(param_type, DAKFilter::DAKParamChanged, data);
+		obs_property_t *param_type = obs_properties_add_list(props, "dak_param_list", "Property to Modify",
+									OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
-	obs_properties_add_color(props, "dak_color", "Color when data field is blank");
-	obs_properties_add_color_alpha(props, "dak_color_alpha", "Color when data field is blank");
+		obs_property_set_modified_callback2(param_type, DAKFilter::DAKParamChanged, this);
 
-	std::string info2 =
-		"<a href=\"https://github.com/bkpeterson/obs-daktronics\">Daktronics Source</a> (1.0) by bkpeterson";
-	obs_properties_add_text(props, "plugin_info2", info2.c_str(), OBS_TEXT_INFO);
+		obs_properties_add_color(props, "dak_color", "Color when data field is blank");
+		obs_properties_add_color_alpha(props, "dak_color_alpha", "Color when data field is blank");
+
+		std::string info2 =
+			"<a href=\"https://github.com/bkpeterson/obs-daktronics\">Daktronics Source</a> (1.0) by bkpeterson";
+		obs_properties_add_text(props, "plugin_info2", info2.c_str(), OBS_TEXT_INFO);
+	}
 
 	return props;
 }
