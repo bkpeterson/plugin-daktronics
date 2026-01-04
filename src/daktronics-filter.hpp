@@ -52,4 +52,7 @@ private:
 	int _origColor;
 	int _colorAlpha;
 	int _origColorAlpha;
+
+	static bool _filterChanged;
+	static bool _paramChanged;
 };

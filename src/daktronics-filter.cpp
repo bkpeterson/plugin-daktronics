@@ -260,6 +260,12 @@ bool DAKFilter::DAKSportChanged(obs_properties_t *props, obs_property_t *propert
 bool DAKFilter::DAKFilterChanged(void *data, obs_properties_t *props, obs_property_t *property, obs_data_t *settings)
 {
 	UNUSED_PARAMETER(property);
+
+	if(_filterChanged)
+		return true;
+	else
+		_filterChanged = true;
+
 	DAKFilter *instance = (DAKFilter *)data;
 
 	uint32_t filter_type = (uint32_t)obs_data_get_int(settings, "dak_filter_list");
@@ -291,17 +297,25 @@ bool DAKFilter::DAKFilterChanged(void *data, obs_properties_t *props, obs_proper
 		break;
 	}
 
+	_filterChanged = false;
 	return true;
 }
 
 bool DAKFilter::DAKParamChanged(void *data, obs_properties_t *props, obs_property_t *property, obs_data_t *settings)
 {
 	UNUSED_PARAMETER(property);
+
+	if(_paramChanged)
+		return true;
+	else
+		_paramChanged = true;
+
 	DAKFilter *instance = (DAKFilter *)data;
 
 	std::string paramName = obs_data_get_string(settings, "dak_param_list");
 
 	instance->doColorProps(props, paramName);
 
+	_paramChanged = false;
 	return true;
 }
