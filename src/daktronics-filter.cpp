@@ -328,7 +328,9 @@ bool DAKFilter::DAKParamChanged(void *data, obs_properties_t *props, obs_propert
 
 	std::string paramName = obs_data_get_string(settings, "dak_param_list");
 
-	instance->doColorProps(props, paramName);
+	if(!paramName.empty()) {
+		instance->doColorProps(props, paramName);
+	}
 
 	instance->_paramChanged = false;
 	return true;
