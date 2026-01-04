@@ -265,7 +265,7 @@ bool DAKFilter::DAKFilterChanged(void *data, obs_properties_t *props, obs_proper
 
 	DAKFilter *instance = (DAKFilter *)data;
 	if(instance->_filterChanged)
-		return true;
+		return false;
 	else
 		instance->_filterChanged = true;
 
@@ -309,7 +309,7 @@ bool DAKFilter::DAKParamChanged(void *data, obs_properties_t *props, obs_propert
 
 	DAKFilter *instance = (DAKFilter *)data;
 	if(instance->_paramChanged)
-		return true;
+		return false;
 	else
 		instance->_paramChanged = true;
 
