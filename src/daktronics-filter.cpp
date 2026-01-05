@@ -277,8 +277,7 @@ bool DAKFilter::DAKSportChanged(obs_properties_t *props, obs_property_t *propert
 bool DAKFilter::DAKFilterChanged(void *data, obs_properties_t *props, obs_property_t *property, obs_data_t *settings)
 {
 	UNUSED_PARAMETER(property);
-
-	DAKFilter *instance = (DAKFilter *)data;
+	UNUSED_PARAMETER(data);
 
 	uint32_t filter_type = (uint32_t)obs_data_get_int(settings, "dak_filter_list");
 	obs_property_t *list = obs_properties_get(props, "dak_param_list");
