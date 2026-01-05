@@ -32,7 +32,6 @@ public:
 
 	void _render();
 	obs_properties_t *_getProperties();
-	void populateParams(obs_property_t *list, obs_property_type paramType);
 	void doColorProps(obs_properties_t *props, std::string paramName);
 	bool _DAKSportChanged(obs_properties_t *props, obs_property_t *property, obs_data_t *settings);
 
@@ -51,6 +50,7 @@ private:
 	uint32_t _filterType;
 	std::string _paramName;
 	uint32_t _paramType;
+
 	int _color;
 	int _origColor;
 	int _colorAlpha;
