@@ -44,7 +44,6 @@ public:
 
 private:
 	obs_source_t *_source;
-	obs_properties_t *props;
 
 	std::string _sport;
 	uint32_t _index;
@@ -56,7 +55,4 @@ private:
 	int _origColor;
 	int _colorAlpha;
 	int _origColorAlpha;
-
-	bool _filterChanged;
-	bool _paramChanged;
 };

@@ -26,9 +26,6 @@ DAKFilter::DAKFilter(obs_data_t *settings, obs_source_t *source) : _source(sourc
 {
 	_filterType = DAKFilter::DAK_TEXT;
 	_internalValue = "";
-	_filterChanged = false;
-	_paramChanged = false;
-	props = nullptr;
 	Update(this, settings);
 }
 
@@ -178,47 +175,45 @@ obs_properties_t *DAKFilter::GetProperties(void *data)
 
 obs_properties_t *DAKFilter::_getProperties()
 {
-	if(props == nullptr) {
-		props = obs_properties_create();
+	obs_properties_t *props = obs_properties_create();
 
-		obs_property_t *sport_type =
-			obs_properties_add_list(props, "dak_sport_type", "Sport", OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
+	obs_property_t *sport_type =
+		obs_properties_add_list(props, "dak_sport_type", "Sport", OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
-		DAKDataUtils::PopulateSportProps(sport_type);
+	DAKDataUtils::PopulateSportProps(sport_type);
 
-		obs_property_set_modified_callback(sport_type, DAKFilter::DAKSportChanged);
+	obs_property_set_modified_callback(sport_type, DAKFilter::DAKSportChanged);
 
-		obs_properties_add_list(props, "dak_field_list", "Scoreboard Data Field", OBS_COMBO_TYPE_LIST,
-					OBS_COMBO_FORMAT_INT);
+	obs_properties_add_list(props, "dak_field_list", "Scoreboard Data Field", OBS_COMBO_TYPE_LIST,
+				OBS_COMBO_FORMAT_INT);
 
-		obs_property_t *filter_type = obs_properties_add_list(props, "dak_filter_list", "Filter Type",
-									OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
-		obs_property_list_add_int(filter_type, "Show/Hide", DAKFilter::DAK_VISIBLE);
-		obs_property_list_add_int(filter_type, "Update Text", DAKFilter::DAK_TEXT);
-		obs_property_list_add_int(filter_type, "Change Color", DAKFilter::DAK_COLOR);
+	obs_property_t *filter_type = obs_properties_add_list(props, "dak_filter_list", "Filter Type",
+								OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_INT);
+	obs_property_list_add_int(filter_type, "Show/Hide", DAKFilter::DAK_VISIBLE);
+	obs_property_list_add_int(filter_type, "Update Text", DAKFilter::DAK_TEXT);
+	obs_property_list_add_int(filter_type, "Change Color", DAKFilter::DAK_COLOR);
 
-		obs_property_set_modified_callback2(filter_type, DAKFilter::DAKFilterChanged, this);
+	obs_property_set_modified_callback2(filter_type, DAKFilter::DAKFilterChanged, this);
 
-		obs_property_t *param_type = obs_properties_add_list(props, "dak_param_list", "Property to Modify",
-									OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
+	obs_property_t *param_type = obs_properties_add_list(props, "dak_param_list", "Property to Modify",
+								OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
-		obs_property_set_modified_callback2(param_type, DAKFilter::DAKParamChanged, this);
+	obs_property_set_modified_callback2(param_type, DAKFilter::DAKParamChanged, this);
 
-		obs_properties_add_color(props, "dak_color", "Color when data field is blank");
-		obs_properties_add_color_alpha(props, "dak_color_alpha", "Color when data field is blank");
+	obs_properties_add_color(props, "dak_color", "Color when data field is blank");
+	obs_properties_add_color_alpha(props, "dak_color_alpha", "Color when data field is blank");
 
-		std::string info2 =
-			"<a href=\"https://github.com/bkpeterson/obs-daktronics\">Daktronics Source</a> (1.0) by bkpeterson";
-		obs_properties_add_text(props, "plugin_info2", info2.c_str(), OBS_TEXT_INFO);
-	}
+	std::string info2 =
+		"<a href=\"https://github.com/bkpeterson/obs-daktronics\">Daktronics Source</a> (1.0) by bkpeterson";
+	obs_properties_add_text(props, "plugin_info2", info2.c_str(), OBS_TEXT_INFO);
 
 	return props;
 }
 
 void DAKFilter::populateParams(obs_property_t *list, obs_property_type paramType)
 {
-	//obs_source_t *targetSource = obs_filter_get_parent(_source);
-	obs_properties_t *sourceProps = obs_source_properties(_source);
+	obs_source_t *targetSource = obs_filter_get_parent(_source);
+	obs_properties_t *sourceProps = obs_source_properties(targetSource);
 
 	for (obs_property_t *prop = obs_properties_first(sourceProps); prop != NULL; obs_property_next(&prop)) {
 		const char *prop_name = obs_property_name(prop);
@@ -231,8 +226,8 @@ void DAKFilter::populateParams(obs_property_t *list, obs_property_type paramType
 
 void DAKFilter::doColorProps(obs_properties_t *props, std::string paramName)
 {
-	//obs_source_t *targetSource = obs_filter_get_parent(_source);
-	obs_properties_t *sourceProps = obs_source_properties(_source);
+	obs_source_t *targetSource = obs_filter_get_parent(_source);
+	obs_properties_t *sourceProps = obs_source_properties(targetSource);
 
 	obs_property_t *targetProp = obs_properties_get(sourceProps, paramName.c_str());
 	obs_property_t *color = obs_properties_get(props, "dak_color");
@@ -277,10 +272,6 @@ bool DAKFilter::DAKFilterChanged(void *data, obs_properties_t *props, obs_proper
 	UNUSED_PARAMETER(property);
 
 	DAKFilter *instance = (DAKFilter *)data;
-	if(instance->_filterChanged)
-		return false;
-	else
-		instance->_filterChanged = true;
 
 	uint32_t filter_type = (uint32_t)obs_data_get_int(settings, "dak_filter_list");
 	obs_property_t *list = obs_properties_get(props, "dak_param_list");
@@ -311,7 +302,6 @@ bool DAKFilter::DAKFilterChanged(void *data, obs_properties_t *props, obs_proper
 		break;
 	}
 
-	instance->_filterChanged = false;
 	return true;
 }
 
@@ -319,12 +309,7 @@ bool DAKFilter::DAKParamChanged(void *data, obs_properties_t *props, obs_propert
 {
 	UNUSED_PARAMETER(property);
 
-
 	DAKFilter *instance = (DAKFilter *)data;
-	if(instance->_paramChanged)
-		return false;
-	else
-		instance->_paramChanged = true;
 
 	std::string paramName = obs_data_get_string(settings, "dak_param_list");
 
@@ -332,6 +317,5 @@ bool DAKFilter::DAKParamChanged(void *data, obs_properties_t *props, obs_propert
 		instance->doColorProps(props, paramName);
 	}
 
-	instance->_paramChanged = false;
 	return true;
 }
