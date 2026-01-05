@@ -10,6 +10,8 @@ public:
 	DAKFilter(obs_data_t *settings, obs_source_t *obs_source);
 	~DAKFilter();
 
+	obs_source_t *_source;
+
 	static const uint32_t DAK_VISIBLE = 1;
 	static const uint32_t DAK_TEXT = 2;
 	static const uint32_t DAK_COLOR = 3;
@@ -42,13 +44,12 @@ public:
 				    obs_data_t *settings);
 
 private:
-	obs_source_t *_source;
-
 	std::string _sport;
 	uint32_t _index;
 	std::string _internalValue;
 	uint32_t _filterType;
 	std::string _paramName;
+	std::string _paramColorName;
 	uint32_t _paramType;
 
 	int _color;
