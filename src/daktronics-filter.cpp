@@ -117,14 +117,15 @@ void DAKFilter::Render(void *data, gs_effect_t *effect)
 {
 	UNUSED_PARAMETER(effect);
 
-	auto &instance = *static_cast<DAKFilter *>(data);
-	instance._render();
+	obs_source_skip_video_filter(static_cast<obs_source_t *>(data));
+	//auto &instance = *static_cast<DAKFilter *>(data);
+	//instance._render();
 }
 
-void DAKFilter::_render()
-{
-	obs_source_skip_video_filter(_source);
-}
+//void DAKFilter::_render()
+//{
+//	obs_source_skip_video_filter(this);
+//}
 
 void DAKFilter::Update(void *data, obs_data_t *settings)
 {

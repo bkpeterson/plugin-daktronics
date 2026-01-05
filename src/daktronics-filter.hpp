@@ -30,7 +30,7 @@ public:
 	static obs_properties_t *GetProperties(void *data);
 	static void GetDefaults(obs_data_t *settings);
 
-	void _render();
+	//void _render();
 	obs_properties_t *_getProperties();
 	void doColorProps(obs_properties_t *props, std::string paramName);
 	bool _DAKSportChanged(obs_properties_t *props, obs_property_t *property, obs_data_t *settings);
