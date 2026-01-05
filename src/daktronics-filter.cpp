@@ -117,7 +117,8 @@ void DAKFilter::Render(void *data, gs_effect_t *effect)
 {
 	UNUSED_PARAMETER(effect);
 
-	obs_source_skip_video_filter(static_cast<obs_source_t *>(data));
+	return;
+	//obs_source_skip_video_filter(static_cast<obs_source_t *>(data));
 	//auto &instance = *static_cast<DAKFilter *>(data);
 	//instance._render();
 }
