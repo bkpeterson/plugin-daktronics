@@ -116,7 +116,7 @@ std::string DAKFilter::GetSport()
 void DAKFilter::Render(void *data, gs_effect_t *effect)
 {
 	UNUSED_PARAMETER(effect);
-
+	UNUSED_PARAMETER(data);
 	return;
 	//obs_source_skip_video_filter(static_cast<obs_source_t *>(data));
 	//auto &instance = *static_cast<DAKFilter *>(data);
