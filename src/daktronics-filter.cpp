@@ -145,12 +145,12 @@ void DAKFilter::Update(obs_data_t *settings)
 	_paramName = (std::string)obs_data_get_string(settings, "dak_param_list");
 	_paramColorName = (std::string)obs_data_get_string(settings, "dak_param_list_color");
 
-	obs_source_t *targetSource = obs_filter_get_parent(_source);
+	//const obs_source_t *targetSource = obs_filter_get_parent(_source);
 
-	if(!targetSource)
-		return;
-		
-	obs_properties_t *sourceProps = obs_source_properties(targetSource);
+	//if(!targetSource)
+	//	return;
+
+	obs_properties_t *sourceProps = obs_source_properties(_source);
 
 	if (_filterType == DAK_COLOR) {
 		obs_property_t *targetProp = obs_properties_get(sourceProps, _paramColorName.c_str());
