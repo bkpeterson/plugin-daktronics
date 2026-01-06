@@ -135,8 +135,8 @@ void DAKFilter::Update(void *data, obs_data_t *settings)
 
 void DAKFilter::Update(obs_data_t *settings)
 {
-	if(!_source)
-		return;
+	//if(!_source)
+	//	return;
 
 	_sport = (std::string)obs_data_get_string(settings, "dak_sport_type");
 	_index = (uint32_t)obs_data_get_int(settings, "dak_field_list");
@@ -174,8 +174,8 @@ void DAKFilter::Update(obs_data_t *settings)
 	obs_properties_destroy(sourceProps);
 	*/
 
-	DAKDataUtils::RemoveFilter(this);
-	DAKDataUtils::AddFilter(this);
+	//DAKDataUtils::RemoveFilter(this);
+	//DAKDataUtils::AddFilter(this);
 }
 
 void DAKFilter::GetDefaults(obs_data_t *settings)
