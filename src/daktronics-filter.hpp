@@ -44,6 +44,8 @@ public:
 				    obs_data_t *settings);
 
 private:
+	void _render();
+
 	std::string _sport;
 	uint32_t _index;
 	std::string _internalValue;
