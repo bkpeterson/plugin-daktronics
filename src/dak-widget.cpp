@@ -33,11 +33,9 @@ DAKDock::DAKDock(QWidget *parent) : QFrame(parent)
 
 	connectedBox = new QCheckBox(this);
 	connectedBox->setCheckable(false);
-	connectedBox->setStyleSheet(
-		"QLabel {"
-		"color: red;"
-		"}"
-	);
+	connectedBox->setStyleSheet("QLabel {"
+				    "color: red;"
+				    "}");
 
 	horizontalLayout->addWidget(connectedBox);
 
@@ -97,7 +95,7 @@ DAKDock::DAKDock(QWidget *parent) : QFrame(parent)
 	char *config_path = obs_module_config_path("dak-settings.json");
 	std::string path = config_path ? config_path : "";
 	bfree(config_path);
-	
+
 	size_t pos = path.find_last_of("/\\");
 	if (pos != std::string::npos) {
 		std::string dir = path.substr(0, pos);
@@ -126,11 +124,12 @@ DAKDock::~DAKDock() {}
 
 // --- Slot Implementations ---
 
-void DAKDock::startOutput() {
+void DAKDock::startOutput()
+{
 	char *config_path = obs_module_config_path("dak-settings.json");
 	std::string path = config_path ? config_path : "";
 	bfree(config_path);
-	
+
 	size_t pos = path.find_last_of("/\\");
 	if (pos != std::string::npos) {
 		std::string dir = path.substr(0, pos);
@@ -140,7 +139,7 @@ void DAKDock::startOutput() {
 	obs_data_t *settings = obs_data_create();
 	obs_data_set_string(settings, "serial_port", dropDownList->currentText().toStdString().c_str());
 	obs_data_set_string(settings, "screen", screenList->currentText().toStdString().c_str());
-	if(obs_data_save_json(settings, path.c_str()))
+	if (obs_data_save_json(settings, path.c_str()))
 		appendLogMessage("Settings saved successfully.");
 	else
 		appendLogMessage("Failed to save settings.");
@@ -172,7 +171,7 @@ void DAKDock::selectItem()
 	char *config_path = obs_module_config_path("dak-settings.json");
 	std::string path = config_path ? config_path : "";
 	bfree(config_path);
-	
+
 	size_t pos = path.find_last_of("/\\");
 	if (pos != std::string::npos) {
 		std::string dir = path.substr(0, pos);
@@ -182,7 +181,7 @@ void DAKDock::selectItem()
 	obs_data_t *settings = obs_data_create();
 	obs_data_set_string(settings, "serial_port", selected.toStdString().c_str());
 	obs_data_set_string(settings, "screen", screenList->currentText().toStdString().c_str());
-	if(obs_data_save_json(settings, path.c_str()))
+	if (obs_data_save_json(settings, path.c_str()))
 		appendLogMessage("Settings saved successfully.");
 	else
 		appendLogMessage("Failed to save settings.");
@@ -208,18 +207,14 @@ void DAKDock::setConnected(const bool isConnected)
 
 	if (isConnected) {
 		connectedBox->setText(" Connected");
-		connectedBox->setStyleSheet(
-			"QLabel {"
-			"color: green;"
-			"}"
-		);
+		connectedBox->setStyleSheet("QLabel {"
+					    "color: green;"
+					    "}");
 	} else {
 		connectedBox->setText(" Disconnected");
-		connectedBox->setStyleSheet(
-			"QLabel {"
-			"color: red;"
-			"}"
-		);
+		connectedBox->setStyleSheet("QLabel {"
+					    "color: red;"
+					    "}");
 	}
 
 	lineEdit->setText(DAKDataUtils::getSerialPort().c_str());

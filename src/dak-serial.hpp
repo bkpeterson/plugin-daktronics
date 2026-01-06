@@ -66,7 +66,6 @@ private Q_SLOTS:
 	void onLineReceivedSlot(const QString &line);
 	void onErrorSlot(const QString &error);
 
-
 signals:
 	// Signal emitted when a new log message is available
 	void setConnected(const bool isConnected);
@@ -81,7 +80,6 @@ protected:
 
 	// Thread management
 	std::unique_ptr<std::thread> readThread;
-
 
 	// Callbacks (called from main thread)
 	LineReceivedCallback lineCallback;
