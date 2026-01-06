@@ -119,14 +119,7 @@ void DAKDataUtils::RemoveFilter(DAKFilter *oldFilter)
 {
 	uint32_t index = oldFilter->GetIndex();
 	std::vector<DAKFilter *> filters = _filters[index];
-
-	for (auto it = filters.begin(); it != filters.end(); it++) {
-		if (*it == oldFilter) {
-			delete (*it);
-			filters.erase(it);
-			break;
-		}
-	}
+	filters.erase(std::remove(filters.begin(), filters.end(), oldFilter), filters.end());
 }
 
 void DAKDataUtils::UpdateField(uint32_t index, std::string value)

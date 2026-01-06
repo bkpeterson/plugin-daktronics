@@ -38,15 +38,15 @@ void *DAKFilter::Create(obs_data_t *settings, obs_source_t *source)
 {
 	auto context = new DAKFilter(settings, source);
 
-	//DAKDataUtils::AddFilter(context);
+	DAKDataUtils::AddFilter(context);
 	return context;
 }
 
 void DAKFilter::Destroy(void *data)
 {
-	UNUSED_PARAMETER(data);
-	//auto instance = static_cast<DAKFilter *>(data);
-	//DAKDataUtils::RemoveFilter(instance);
+	//UNUSED_PARAMETER(data);
+	auto instance = static_cast<DAKFilter *>(data);
+	DAKDataUtils::RemoveFilter(instance);
 }
 
 const char *DAKFilter::GetName(void *type_data)
@@ -173,8 +173,8 @@ void DAKFilter::Update(obs_data_t *settings)
 
 	obs_properties_destroy(sourceProps);
 
-	//DAKDataUtils::RemoveFilter(this);
-	//DAKDataUtils::AddFilter(this);
+	DAKDataUtils::RemoveFilter(this);
+	DAKDataUtils::AddFilter(this);
 }
 
 void DAKFilter::GetDefaults(obs_data_t *settings)
@@ -182,6 +182,10 @@ void DAKFilter::GetDefaults(obs_data_t *settings)
 	obs_data_set_default_string(settings, "dak_sport_type", "Basketball");
 	obs_data_set_default_int(settings, "dak_field_list", 1);
 	obs_data_set_default_int(settings, "dak_filter_list", DAKFilter::DAK_TEXT);
+	obs_data_set_default_string(settings, "dak_param_list", "");
+	obs_data_set_default_string(settings, "dak_parama_list_color", "");
+	obs_data_set_default_int(settings, "dak_color", 0xFFFFFF);
+	obs_data_set_default_int(settings, "dak_color_alpha", 0xFFFFFFFF);
 }
 
 obs_properties_t *DAKFilter::GetProperties(void *data)
@@ -233,14 +237,19 @@ obs_properties_t *DAKFilter::_getProperties()
 			obs_property_list_add_string(param_type_color, prop_name, prop_name);
 	}
 
-	obs_property_set_modified_callback2(param_type, DAKFilter::DAKParamChanged, this);
+	obs_property_set_modified_callback2(param_type_color, DAKFilter::DAKParamChanged, this);
 
-	obs_properties_add_color(props, "dak_color", "Color when data field is blank");
-	obs_properties_add_color_alpha(props, "dak_color_alpha", "Color when data field is blank");
+	obs_property_t *colorChoice = obs_properties_add_color(props, "dak_color", "Color when data field is blank");
+	obs_property_t *alphaChoice = obs_properties_add_color_alpha(props, "dak_color_alpha", "Color when data field is blank");
 
 	std::string info2 =
 		"<a href=\"https://github.com/bkpeterson/obs-daktronics\">Daktronics Source</a> (1.0) by bkpeterson";
 	obs_properties_add_text(props, "plugin_info2", info2.c_str(), OBS_TEXT_INFO);
+
+	obs_property_set_visible(param_type, false);
+	obs_property_set_visible(param_type_color, false);
+	obs_property_set_visible(colorChoice, false);
+	obs_property_set_visible(alphaChoice, false);
 
 	obs_properties_destroy(sourceProps);
 

@@ -6,6 +6,7 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "dak-sport-data.hpp"
 #include "daktronics-filter.hpp"
