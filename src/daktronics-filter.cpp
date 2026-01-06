@@ -38,14 +38,14 @@ void *DAKFilter::Create(obs_data_t *settings, obs_source_t *source)
 {
 	auto context = new DAKFilter(settings, source);
 
-	DAKDataUtils::AddFilter(context);
+	//DAKDataUtils::AddFilter(context);
 	return context;
 }
 
 void DAKFilter::Destroy(void *data)
 {
 	auto instance = static_cast<DAKFilter *>(data);
-	DAKDataUtils::RemoveFilter(instance);
+	//DAKDataUtils::RemoveFilter(instance);
 }
 
 const char *DAKFilter::GetName(void *type_data)
