@@ -214,7 +214,7 @@ obs_properties_t *DAKFilter::_getProperties()
 
 	obs_property_set_modified_callback2(filter_type, DAKFilter::DAKFilterChanged, this);
 
-	obs_properties_add_list(props, "dak_param_list", "Property to Modify",
+	obs_property_t *param_type = obs_properties_add_list(props, "dak_param_list", "Property to Modify",
 								OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
 	for (obs_property_t *prop = obs_properties_first(sourceProps); prop != NULL; obs_property_next(&prop)) {
@@ -223,7 +223,7 @@ obs_properties_t *DAKFilter::_getProperties()
 			obs_property_list_add_string(param_type, prop_name, prop_name);
 	}
 
-	obs_properties_add_list(props, "dak_param_list_color", "Property to Modify",
+	obs_property_t *param_type_color = obs_properties_add_list(props, "dak_param_list_color", "Property to Modify",
 								OBS_COMBO_TYPE_LIST, OBS_COMBO_FORMAT_STRING);
 
 	for (obs_property_t *prop = obs_properties_first(sourceProps); prop != NULL; obs_property_next(&prop)) {
