@@ -50,6 +50,7 @@ private:
 	uint32_t _index;
 	std::string _internalValue;
 	uint32_t _filterType;
+	bool _invertLogic;
 	std::string _paramName;
 	std::string _paramColorName;
 	uint32_t _paramType;

@@ -151,17 +151,14 @@ void DAKDock::startOutput() {
 
 void DAKDock::refreshList()
 {
-	// **Plugin Logic:** Clear and add new items (e.g., from a file or network)
 	dropDownList->clear();
 
 	std::vector<std::string> ports = SerialPort::listPorts();
 
-	// 2. Add available ports
 	for (const auto &port : ports) {
 		dropDownList->addItem(port.c_str());
 	}
 
-	// 3. If no ports are found, add a placeholder
 	if (ports.empty()) {
 		dropDownList->addItem("No Serial Ports Found");
 	}
@@ -208,7 +205,7 @@ void DAKDock::appendLogMessage(const QString &message)
 void DAKDock::setConnected(const bool isConnected)
 {
 	connectedBox->setChecked(isConnected);
-	
+
 	if (isConnected) {
 		connectedBox->setText(" Connected");
 		connectedBox->setStyleSheet(
