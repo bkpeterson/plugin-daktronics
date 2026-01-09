@@ -32,7 +32,7 @@ uint32_t DAKSportData::GetDataSize()
 
 DAKFieldData *DAKSportData::GetField(uint32_t fieldIdx)
 {
-	for (auto const& fieldData : _fieldData) {
+	for (auto const &fieldData : _fieldData) {
 		if (fieldData->_index == fieldIdx)
 			return fieldData.get();
 	}
@@ -42,7 +42,7 @@ DAKFieldData *DAKSportData::GetField(uint32_t fieldIdx)
 
 uint32_t DAKSportData::GetFieldLen(uint32_t fieldIdx)
 {
-	for (auto const& fieldData : _fieldData) {
+	for (auto const &fieldData : _fieldData) {
 		if (fieldData->_index == fieldIdx)
 			return fieldData->_length;
 	}
@@ -52,7 +52,7 @@ uint32_t DAKSportData::GetFieldLen(uint32_t fieldIdx)
 
 void DAKSportData::PopulateFieldProps(obs_property_t *fieldList)
 {
-	for (auto const& fieldData : _fieldData) {
+	for (auto const &fieldData : _fieldData) {
 		obs_property_list_add_int(fieldList, fieldData->_field.c_str(), fieldData->_index);
 	}
 }

@@ -262,8 +262,7 @@ obs_properties_t *DAKFilter::_getProperties()
 	obs_property_set_modified_callback2(param_type_color, DAKFilter::DAKParamChanged, this);
 
 	obs_property_t *colorChoice = obs_properties_add_color(props, "dak_color", "Filter color");
-	obs_property_t *alphaChoice =
-		obs_properties_add_color_alpha(props, "dak_color_alpha", "Filter color");
+	obs_property_t *alphaChoice = obs_properties_add_color_alpha(props, "dak_color_alpha", "Filter color");
 
 	std::string info2 =
 		"<a href=\"https://github.com/bkpeterson/obs-daktronics\">Daktronics Source</a> (1.0) by bkpeterson";
