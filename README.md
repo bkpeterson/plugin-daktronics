@@ -1,59 +1,20 @@
-# OBS Plugin Template
+# OBS Daktronics Scoreboard Plugin
 
 ## Introduction
 
-The plugin template is meant to be used as a starting point for OBS Studio plugin development. It includes:
+This plugin reads data in real-time from a Daktronics scoreboard controller such as the AllSport 5000.  The connection is via RS-232 serial interface, so you will need a DB-25 male connector to USB cable to connect the scoreboard controller to a computer.  My setup involves a DB-25 to DB-9 adapter, then a DB-9 to USB adapter cable as they are easier to find.
 
-* Boilerplate plugin source code
-* A CMake project file
-* GitHub Actions workflows and repository actions
+The plugin creates a custom dock which can be activated via the "Tools" menu in OBS.  This dock allows you to select the appropriate serial port, view the serial connection status, and activate a full-screen preview to output the scoreboard.
 
-## Supported Build Environments
+To use the filter, create a source to display a scoreboard field, add the Daktronics scoreboard filter, and select the filter type from the filter properties:
+* Show/Hide - This will toggle the visibility of the source depending on whether the selected scoreboard data field is blank or not (:00 is considered blank)
+* Update Text - This will update the selected parameter of the source with the data from the selected scoreboard field as it is received from the controller
+* Update Color - This will change the color of the selected parameter for the source based on whether or not the selected scoreboard field is blank (or :00)
 
-| Platform  | Tool   |
-|-----------|--------|
-| Windows   | Visal Studio 17 2022 |
-| macOS     | XCode 16.0 |
-| Windows, macOS  | CMake 3.30.5 |
-| Ubuntu 24.04 | CMake 3.28.3 |
-| Ubuntu 24.04 | `ninja-build` |
-| Ubuntu 24.04 | `pkg-config`
-| Ubuntu 24.04 | `build-essential` |
+* Parameter - for text and color updates, select the parameter name of the source which should be updated based on the scoreboard data
 
-## Quick Start
+* Invert logic - This applies to the Show/Hide setting and will reverse the toggle to show a source when blank (or :00) instead of hide it when blank.  An example might be a red border around the game clock that is displayed when the clock reaches zero.  Alternatively, a visible horn indicator may be displayed when the scoreboard data field for the horn is NOT blank.
 
-An absolute bare-bones [Quick Start Guide](https://github.com/obsproject/obs-plugintemplate/wiki/Quick-Start-Guide) is available in the wiki.
+The "Sport" and "Field" parameters select the sport for the current scoreboard mode, which updates the list of available scoreboard data fields to select from.
 
-## Documentation
-
-All documentation can be found in the [Plugin Template Wiki](https://github.com/obsproject/obs-plugintemplate/wiki).
-
-Suggested reading to get up and running:
-
-* [Getting started](https://github.com/obsproject/obs-plugintemplate/wiki/Getting-Started)
-* [Build system requirements](https://github.com/obsproject/obs-plugintemplate/wiki/Build-System-Requirements)
-* [Build system options](https://github.com/obsproject/obs-plugintemplate/wiki/CMake-Build-System-Options)
-
-## GitHub Actions & CI
-
-Default GitHub Actions workflows are available for the following repository actions:
-
-* `push`: Run for commits or tags pushed to `master` or `main` branches.
-* `pr-pull`: Run when a Pull Request has been pushed or synchronized.
-* `dispatch`: Run when triggered by the workflow dispatch in GitHub's user interface.
-* `build-project`: Builds the actual project and is triggered by other workflows.
-* `check-format`: Checks CMake and plugin source code formatting and is triggered by other workflows.
-
-The workflows make use of GitHub repository actions (contained in `.github/actions`) and build scripts (contained in `.github/scripts`) which are not needed for local development, but might need to be adjusted if additional/different steps are required to build the plugin.
-
-### Retrieving build artifacts
-
-Successful builds on GitHub Actions will produce build artifacts that can be downloaded for testing. These artifacts are commonly simple archives and will not contain package installers or installation programs.
-
-### Building a Release
-
-To create a release, an appropriately named tag needs to be pushed to the `main`/`master` branch using semantic versioning (e.g., `12.3.4`, `23.4.5-beta2`). A draft release will be created on the associated repository with generated installer packages or installation programs attached as release artifacts.
-
-## Signing and Notarizing on macOS
-
-Basic concepts of codesigning and notarization on macOS are explained in the correspodning [Wiki article](https://github.com/obsproject/obs-plugintemplate/wiki/Codesigning-On-macOS) which has a specific section for the [GitHub Actions setup](https://github.com/obsproject/obs-plugintemplate/wiki/Codesigning-On-macOS#setting-up-code-signing-for-github-actions).
+This has been tested on MacOS, so please submit feedback for other platforms.
