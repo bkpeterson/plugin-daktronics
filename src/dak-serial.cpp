@@ -25,6 +25,7 @@ SerialPort::~SerialPort()
 {
 	stopReading();
 	close();
+	delete portObj;
 }
 
 std::unique_ptr<SerialPort> SerialPort::create()

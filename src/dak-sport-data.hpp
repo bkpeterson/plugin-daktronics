@@ -31,5 +31,5 @@ public:
 private:
 	std::string _sport;
 	uint32_t _dataSize;
-	std::vector<DAKFieldData *> _fieldData;
+	std::vector<std::unique_ptr<DAKFieldData>> _fieldData;
 };
