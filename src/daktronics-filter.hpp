@@ -5,6 +5,9 @@
 #include <obs-module.h>
 #include <dak-source-support.h>
 
+#include "dak-sport-data.hpp"
+#include "dak-data-utils.hpp"
+
 class DAKFilter {
 public:
 	DAKFilter(obs_data_t *settings, obs_source_t *obs_source);

@@ -1,5 +1,4 @@
 #include "dak-serial.hpp"
-#include <QString>
 
 std::atomic<bool> exit_flag(false);
 

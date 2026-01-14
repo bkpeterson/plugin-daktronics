@@ -1,6 +1,3 @@
-#include <string>
-#include <vector>
-
 #include "dak-sport-data.hpp"
 
 DAKSportData::DAKSportData(std::string sport, uint32_t dataSize) : _sport(sport), _dataSize(dataSize) {}

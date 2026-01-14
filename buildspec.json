@@ -37,7 +37,7 @@
         }
     },
     "name": "daktronics-realtime-data",
-    "displayName": "OBS Daktronics Realtime Data",
+    "displayName": "Daktronics Scoreboard Plugin",
     "version": "1.0.0",
     "author": "Bjorn Peterson",
     "website": "https://bjornpeterson.com",

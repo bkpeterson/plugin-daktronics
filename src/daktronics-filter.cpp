@@ -1,26 +1,4 @@
-/*
-Plugin Name
-Copyright (C) <Year> <Developer> <Email Address>
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along
-with this program. If not, see <https://www.gnu.org/licenses/>
-*/
-
-#include <string>
-
-#include "dak-sport-data.hpp"
 #include "daktronics-filter.hpp"
-#include "dak-data-utils.hpp"
 
 DAKFilter::DAKFilter(obs_data_t *settings, obs_source_t *source) : _source(source)
 {
@@ -265,7 +243,7 @@ obs_properties_t *DAKFilter::_getProperties()
 	obs_property_t *alphaChoice = obs_properties_add_color_alpha(props, "dak_color_alpha", "Filter color");
 
 	std::string info2 =
-		"<a href=\"https://github.com/bkpeterson/obs-daktronics\">Daktronics Source</a> (1.0) by bkpeterson";
+		"<a href=\"https://github.com/bkpeterson/plugin-daktronics\">Daktronics Source</a> (1.0) by bkpeterson";
 	obs_properties_add_text(props, "plugin_info2", info2.c_str(), OBS_TEXT_INFO);
 
 	obs_property_set_visible(invert, false);
