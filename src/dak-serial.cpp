@@ -17,7 +17,6 @@ SerialPort::SerialPort()
 	// Connect internal Qt signals to slots so callbacks are invoked in this object's thread
 	connect(this, &SerialPort::lineReceived, this, &SerialPort::onLineReceivedSlot);
 	connect(this, &SerialPort::errorOccurred, this, &SerialPort::onErrorSlot);
-
 }
 
 SerialPort::~SerialPort()
@@ -126,7 +125,6 @@ std::vector<std::string> SerialPort::listPorts()
 {
 	return serial::list_ports();
 }
-
 
 // Slot implementations: these run in the object's thread and call the stored callbacks
 void SerialPort::onLineReceivedSlot(const QString &line)

@@ -1,4 +1,5 @@
 #include "dak-data-utils.hpp"
+#include "daktronics-filter.hpp"
 
 std::map<std::string, DAKSportData *> DAKDataUtils::_allSportsData;
 std::map<uint32_t, std::vector<DAKFilter *>> DAKDataUtils::_filters;
