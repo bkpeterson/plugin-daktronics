@@ -1,8 +1,8 @@
-# OBS Daktronics Scoreboard Plugin
+# Daktronics Scoreboard Plugin
 
 ## Introduction
 
-This plugin reads data in real-time from a Daktronics scoreboard controller such as the AllSport 5000.  The connection is via RS-232 serial interface, so you will need a DB-25 male connector to USB cable to connect the scoreboard controller to a computer.  My setup involves a DB-25 to DB-9 adapter, then a DB-9 to USB adapter cable as they are easier to find.
+This OBS Studio plugin reads data in real-time from a Daktronics scoreboard controller such as the AllSport 5000.  The connection is via RS-232 serial interface, so you will need a DB-25 male connector to USB cable to connect the scoreboard controller to a computer.  My setup involves a DB-25 to DB-9 adapter, then a DB-9 to USB adapter cable as they are easier to find.
 
 The plugin creates a custom dock which can be activated via the "Tools" menu in OBS.  This dock allows you to select the appropriate serial port, view the serial connection status, and activate a full-screen preview to output the scoreboard.
 
