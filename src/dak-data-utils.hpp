@@ -9,10 +9,12 @@
 #include <algorithm>
 
 #include "dak-sport-data.hpp"
-#include "daktronics-filter.hpp"
+
 #include "dak-serial.hpp"
 #include "dak-widget.hpp"
 #include "dak-logger.hpp"
+
+class DAKFilter;
 
 struct DAKTSVHeader {
 	std::string sport;
