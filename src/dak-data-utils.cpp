@@ -265,7 +265,7 @@ void DAKDataUtils::onError(const std::string error)
 	obs_log(LOG_ERROR, "Serial error %s", error.c_str());
 }
 
-void trim_inplace(std::string& s) {
+void DAKDataUtils::trim_inplace(std::string& s) {
     // Trim leading whitespace
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
         return !std::isspace(ch);
