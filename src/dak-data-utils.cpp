@@ -221,7 +221,9 @@ void DAKDataUtils::onLineReceived(std::string line)
 	pos = text.find("\x04");
 	if (pos == std::string::npos)
 		return;
-	text = text.substr(0, pos - 1);
+
+	trim_inplace(text);
+	//text = text.substr(0, pos - 1);
 
 	std::stringstream ss;
 	ss << "[" << codeVal << "] " << text;
@@ -261,4 +263,16 @@ void DAKDataUtils::onError(const std::string error)
 {
 	// Process error
 	obs_log(LOG_ERROR, "Serial error %s", error.c_str());
+}
+
+void trim_inplace(std::string& s) {
+    // Trim leading whitespace
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }));
+
+    // Trim trailing whitespace
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+        return !std::isspace(ch);
+    }).base(), s.end());
 }
