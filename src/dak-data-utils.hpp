@@ -7,6 +7,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <cctype>
 
 #include "dak-sport-data.hpp"
 
@@ -49,6 +50,8 @@ public:
 	static std::string getSerialPort();
 
 	static void startSerial(std::string port);
+
+	static void trim_inplace(std::string& s);
 
 private:
 	static void read_csv_field(std::stringstream &ss, std::string &field);
