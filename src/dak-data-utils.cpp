@@ -214,7 +214,7 @@ void DAKDataUtils::onLineReceived(std::string line)
 	if (codeLen < 4)
 		return;
 	code = code.substr(codeLen - 4);
-	uint32_t codeVal = static_cast<uint32_t>(std::stoul(code)) + 1;
+	uint32_t codeVal = static_cast<uint32_t>(std::stoul(code));
 
 	// Extract the new scoreboard data
 	pos = line.find("\x02");
@@ -234,7 +234,7 @@ void DAKDataUtils::onLineReceived(std::string line)
 
 	// Iterate over registered filters to see if any need to be updated based on the field code
 	for (const auto &pair : _filters) {
-		uint32_t dakKey = pair.first;
+		uint32_t dakKey = pair.first - 1;
 		std::vector<DAKFilter *> dakFilters = pair.second;
 
 		if (codeVal <= dakKey && dakKey < (codeVal + text.length())) {
