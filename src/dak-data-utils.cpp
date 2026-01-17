@@ -251,6 +251,8 @@ void DAKDataUtils::onLineReceived(std::string line)
 					dakText = dakText.substr(0, fieldLen);
 				}
 				trim_inplace(dakText);
+				if (dakText == "0  z")
+					dakText = "0";
 
 				std::stringstream s2;
 				s2 << "****[" << dakKey << "]-<" << curFilter->GetSourceName() << "> " << dakText;
