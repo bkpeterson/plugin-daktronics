@@ -3,7 +3,6 @@
 #include <QFrame>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QCheckBox>
 #include <QLineEdit>
 #include <QComboBox>
 #include <QPushButton>
@@ -37,10 +36,8 @@ private slots:
 	void refreshList();
 	void selectItem();
 	void appendLogMessage(const QString &message);
-	void setConnected(const bool isConnected);
 
 private:
-	QCheckBox *connectedBox;
 	QLineEdit *lineEdit;
 	QComboBox *dropDownList;
 	QPushButton *refreshButton;

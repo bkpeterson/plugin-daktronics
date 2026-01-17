@@ -48,7 +48,6 @@ bool SerialPort::open(const std::string &portName, int baudRate)
 		obs_log(LOG_INFO, "Port opened!!!");
 		opened = true;
 		_port = portName;
-		setConnected(true);
 		return true;
 	}
 	obs_log(LOG_INFO, "Port NOT open.");
@@ -64,7 +63,6 @@ void SerialPort::close()
 	portObj->close();
 	opened = false;
 	_port = "";
-	setConnected(false);
 }
 
 bool SerialPort::startReading()

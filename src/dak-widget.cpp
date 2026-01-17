@@ -29,22 +29,10 @@ DAKDock::DAKDock(QWidget *parent) : QFrame(parent)
 
 	verticalLayout->addItem(horizontalSpacer0);
 
-	QHBoxLayout *horizontalLayout = new QHBoxLayout();
-
-	connectedBox = new QCheckBox(this);
-	connectedBox->setCheckable(false);
-	connectedBox->setStyleSheet("QLabel {"
-				    "color: red;"
-				    "}");
-
-	horizontalLayout->addWidget(connectedBox);
-
 	lineEdit = new QLineEdit(this);
 	lineEdit->setReadOnly(true);
 
-	horizontalLayout->addWidget(lineEdit);
-
-	verticalLayout->addLayout(horizontalLayout);
+	verticalLayout->addWidget(lineEdit);
 
 	QSpacerItem *horizontalSpacer =
 		new QSpacerItem(40, 10, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
@@ -77,7 +65,6 @@ DAKDock::DAKDock(QWidget *parent) : QFrame(parent)
 	verticalLayout->addWidget(plainTextEdit);
 
 	outputButton->setText("Show Display");
-	connectedBox->setText(" Disconnected");
 	refreshButton->setText("Refresh Ports");
 	selectButton->setText("Select Port");
 
@@ -88,7 +75,6 @@ DAKDock::DAKDock(QWidget *parent) : QFrame(parent)
 	connect(refreshButton, &QPushButton::clicked, this, &DAKDock::refreshList);
 	connect(selectButton, &QPushButton::clicked, this, &DAKDock::selectItem);
 	connect(&DAKLogger::instance(), &DAKLogger::logMessage, this, &DAKDock::appendLogMessage);
-	connect(DAKDataUtils::serial.get(), &SerialPort::setConnected, this, &DAKDock::setConnected);
 
 	refreshList();
 
@@ -199,23 +185,4 @@ void DAKDock::appendLogMessage(const QString &message)
 	} else {
 		plainTextEdit->appendPlainText(message);
 	}
-}
-
-void DAKDock::setConnected(const bool isConnected)
-{
-	connectedBox->setChecked(isConnected);
-
-	if (isConnected) {
-		connectedBox->setText(" Connected");
-		connectedBox->setStyleSheet("QLabel {"
-					    "color: green;"
-					    "}");
-	} else {
-		connectedBox->setText(" Disconnected");
-		connectedBox->setStyleSheet("QLabel {"
-					    "color: red;"
-					    "}");
-	}
-
-	lineEdit->setText(DAKDataUtils::getSerialPort().c_str());
 }
