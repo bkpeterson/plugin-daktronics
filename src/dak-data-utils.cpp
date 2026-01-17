@@ -216,14 +216,14 @@ void DAKDataUtils::onLineReceived(std::string line)
 	pos = line.find("\x02");
 	if (pos == std::string::npos)
 		return;
-	std::string text = line.substr(pos);
+	std::string text = line.substr(pos + 1);
 
 	pos = text.find("\x04");
 	if (pos == std::string::npos)
 		return;
 
-	trim_inplace(text);
-	//text = text.substr(0, pos - 1);
+	text = text.substr(0, pos - 1);
+	//trim_inplace(text);
 
 	std::stringstream ss;
 	ss << "[" << codeVal << "] " << text;
