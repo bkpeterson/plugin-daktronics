@@ -227,8 +227,7 @@ void DAKDataUtils::onLineReceived(std::string line)
 		return;
 
 	text = text.substr(0, pos - 1);
-	trim_inplace(text);
-
+	
 	std::stringstream ss;
 	ss << "[" << codeVal << "] " << text;
 	DAKLogger::instance().emit logMessage(QString::fromStdString(ss.str()));
@@ -251,6 +250,7 @@ void DAKDataUtils::onLineReceived(std::string line)
 				} else {
 					dakText = dakText.substr(0, fieldLen);
 				}
+				trim_inplace(dakText);
 
 				std::stringstream s2;
 				s2 << "****[" << dakKey << "]-<" << curFilter->GetSourceName() << "> " << dakText;
