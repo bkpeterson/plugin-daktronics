@@ -206,11 +206,15 @@ void DAKDataUtils::onLineReceived(std::string line)
 		return;
 	code = code.substr(0, pos);
 
+	std::stringstream codeData;
+	codeData << "=" << code << "=";
+	DAKLogger::instance().emit logMessage(QString::fromStdString(codeData.str()));
+
 	int codeLen = static_cast<int>(code.length());
 	if (codeLen < 4)
 		return;
 	code = code.substr(codeLen - 4);
-	uint32_t codeVal = static_cast<uint32_t>(std::stoul(code));
+	uint32_t codeVal = static_cast<uint32_t>(std::stoul(code)) + 1;
 
 	// Extract the new scoreboard data
 	pos = line.find("\x02");
