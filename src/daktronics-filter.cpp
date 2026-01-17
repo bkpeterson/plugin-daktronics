@@ -53,11 +53,17 @@ void DAKFilter::SetValue(std::string newValue)
 
 	switch (_filterType) {
 	case DAKFilter::DAK_VISIBLE:
-		if (_invertLogic) {
-			obs_source_set_enabled(_source, !(_internalValue.length() == 0 || _internalValue == ":00"));
+		if (_internalValue == "" || _internalValue == ":00" || _internalValue == "0") {
+			obs_source_set_enabled(targetSource, _invertLogic);
 		} else {
-			obs_source_set_enabled(_source, (_internalValue.length() > 0 && _internalValue != ":00"));
+			obs_source_set_enabled(targetSource, !_invertLogic);
 		}
+		
+		//if (_invertLogic) {
+		//	obs_source_set_enabled(_source, !(_internalValue.length() == 0 || _internalValue == ":00"));
+		//} else {
+		//	obs_source_set_enabled(_source, (_internalValue.length() > 0 && _internalValue != ":00"));
+		//}
 		break;
 
 	case DAKFilter::DAK_TEXT:
