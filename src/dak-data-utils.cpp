@@ -227,7 +227,7 @@ void DAKDataUtils::onLineReceived(std::string line)
 		return;
 
 	text = text.substr(0, pos - 1);
-	//trim_inplace(text);
+	trim_inplace(text);
 
 	std::stringstream ss;
 	ss << "[" << codeVal << "] " << text;
