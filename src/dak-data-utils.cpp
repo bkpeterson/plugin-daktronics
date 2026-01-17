@@ -227,7 +227,7 @@ void DAKDataUtils::onLineReceived(std::string line)
 		return;
 
 	text = text.substr(0, pos);
-	
+
 	std::stringstream ss;
 	ss << "[" << codeVal << "] " << text;
 	DAKLogger::instance().emit logMessage(QString::fromStdString(ss.str()));
@@ -271,14 +271,11 @@ void DAKDataUtils::onError(const std::string error)
 	obs_log(LOG_ERROR, "Serial error %s", error.c_str());
 }
 
-void DAKDataUtils::trim_inplace(std::string& s) {
-    // Trim leading whitespace
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }));
+void DAKDataUtils::trim_inplace(std::string &s)
+{
+	// Trim leading whitespace
+	s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
 
-    // Trim trailing whitespace
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
-        return !std::isspace(ch);
-    }).base(), s.end());
+	// Trim trailing whitespace
+	s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(), s.end());
 }

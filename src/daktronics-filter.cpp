@@ -58,12 +58,6 @@ void DAKFilter::SetValue(std::string newValue)
 		} else {
 			obs_source_set_enabled(targetSource, !_invertLogic);
 		}
-		
-		//if (_invertLogic) {
-		//	obs_source_set_enabled(_source, !(_internalValue.length() == 0 || _internalValue == ":00"));
-		//} else {
-		//	obs_source_set_enabled(_source, (_internalValue.length() > 0 && _internalValue != ":00"));
-		//}
 		break;
 
 	case DAKFilter::DAK_TEXT:
@@ -182,7 +176,7 @@ void DAKFilter::GetDefaults(obs_data_t *settings)
 {
 	obs_data_set_default_string(settings, "dak_sport_type", "Basketball");
 	obs_data_set_default_int(settings, "dak_field_list", 1);
-	obs_data_set_default_int(settings, "dak_filter_list", DAKFilter::DAK_TEXT);
+	obs_data_set_default_int(settings, "dak_filter_list", DAKFilter::DAK_VISIBLE);
 	obs_data_set_default_bool(settings, "dak_invert_logic", true);
 	obs_data_set_default_string(settings, "dak_param_list", "");
 	obs_data_set_default_string(settings, "dak_parama_list_color", "");
