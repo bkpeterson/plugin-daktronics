@@ -140,6 +140,8 @@ void DAKFilter::Update(obs_data_t *settings)
 	if (!_source)
 		return;
 
+	DAKDataUtils::RemoveFilter(this);
+
 	_sport = (std::string)obs_data_get_string(settings, "dak_sport_type");
 	_index = (uint32_t)obs_data_get_int(settings, "dak_field_list");
 	_filterType = (uint32_t)obs_data_get_int(settings, "dak_filter_list");
@@ -175,7 +177,6 @@ void DAKFilter::Update(obs_data_t *settings)
 
 	obs_properties_destroy(sourceProps);
 
-	DAKDataUtils::RemoveFilter(this);
 	DAKDataUtils::AddFilter(this);
 }
 
