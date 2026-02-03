@@ -207,8 +207,8 @@ void DAKDataUtils::onLineReceived(std::string line)
 	code = code.substr(0, pos);
 
 	std::stringstream codeData;
-	codeData << "=" << code << "=";
-	DAKLogger::instance().emit logMessage(QString::fromStdString(codeData.str()));
+	//codeData << "=" << code << "=";
+	//DAKLogger::instance().emit logMessage(QString::fromStdString(codeData.str()));
 
 	int codeLen = static_cast<int>(code.length());
 	if (codeLen < 4)
@@ -228,9 +228,9 @@ void DAKDataUtils::onLineReceived(std::string line)
 
 	text = text.substr(0, pos);
 
-	std::stringstream ss;
-	ss << "[" << codeVal << "] " << text;
-	DAKLogger::instance().emit logMessage(QString::fromStdString(ss.str()));
+	//std::stringstream ss;
+	//ss << "[" << codeVal << "] " << text;
+	//DAKLogger::instance().emit logMessage(QString::fromStdString(ss.str()));
 
 	// Iterate over registered filters to see if any need to be updated based on the field code
 	for (const auto &pair : _filters) {
@@ -254,10 +254,10 @@ void DAKDataUtils::onLineReceived(std::string line)
 				if (dakText == "0  z")
 					dakText = "0";
 
-				std::stringstream s2;
-				s2 << "****[" << dakKey << "]-<" << curFilter->GetSourceName() << "> " << dakText;
-				DAKLogger::instance().emit logMessage(QString::fromStdString(s2.str()));
-				obs_log(LOG_INFO, "Received data (%u): %s", dakKey, dakText.c_str());
+				//std::stringstream s2;
+				//s2 << "****[" << dakKey << "]-<" << curFilter->GetSourceName() << "> " << dakText;
+				//DAKLogger::instance().emit logMessage(QString::fromStdString(s2.str()));
+				//obs_log(LOG_INFO, "Received data (%u): %s", dakKey, dakText.c_str());
 
 				curFilter->SetValue(dakText);
 			}
