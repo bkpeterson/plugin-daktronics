@@ -56,7 +56,7 @@ private:
 	bool _invertLogic;
 	std::string _paramName;
 	std::string _paramColorName;
-	uint32_t _paramType;
+	obs_property_type _paramType;
 
 	int _color;
 	int _origColor;
