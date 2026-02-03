@@ -40,6 +40,8 @@ DAKDock::DAKDock(QWidget *parent) : QFrame(parent)
 	verticalLayout->addItem(horizontalSpacer);
 
 	dropDownList = new QComboBox(this);
+	dropDownList->setEditable(true);
+	dropDownList->setInsertPolicy(QComboBox::InsertAtBottom); 
 
 	verticalLayout->addWidget(dropDownList);
 
