@@ -57,12 +57,14 @@ void DAKFilter::SetValue(std::string newValue)
 		if (_internalValue == "" || _internalValue == "0:00" || _internalValue == ":00" ||
 		    _internalValue == "0.0" || _internalValue == "0") {
 			obs_source_set_enabled(targetSource, _invertLogic);
+			std::string actionVerb = _invertLogic ? "Show  " : "Hide  ";
 			DAKLogger::instance().emit logMessage(
-				QString::fromStdString((_invertLogic ? "Show " : "Hide ") + "\"" + sourceName + "\""));
+				QString::fromStdString(actionVerb + "\"" + sourceName + "\""));
 		} else {
 			obs_source_set_enabled(targetSource, !_invertLogic);
+			std::string actionVerb = _invertLogic ? "Hide  " : "Show  ";
 			DAKLogger::instance().emit logMessage(
-				QString::fromStdString((_invertLogic ? "Hide " : "Show ") + "\"" + sourceName + "\""));
+				QString::fromStdString(actionVerb + "\"" + sourceName + "\""));
 		}
 		break;
 
