@@ -80,21 +80,21 @@ void DAKFilter::SetValue(std::string newValue)
 		    _internalValue == "0.0" || _internalValue == "0") {
 			if (_paramType == OBS_PROPERTY_COLOR) {
 				if (_invertLogic) {
-					obs_data_set_int(sourceData, _paramName.c_str(), _color);
+					obs_data_set_int(sourceData, _paramColorName.c_str(), _color);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Highlight color \"" + sourceName + "\""));
 				} else {
-					obs_data_set_int(sourceData, _paramName.c_str(), _origColor);
+					obs_data_set_int(sourceData, _paramColorName.c_str(), _origColor);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Reset color \"" + sourceName + "\""));
 				}
 			} else if (_paramType == OBS_PROPERTY_COLOR_ALPHA) {
 				if (_invertLogic) {
-					obs_data_set_int(sourceData, _paramName.c_str(), _colorAlpha);
+					obs_data_set_int(sourceData, _paramColorName.c_str(), _colorAlpha);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Highlight color \"" + sourceName + "\""));
 				} else {
-					obs_data_set_int(sourceData, _paramName.c_str(), _origColorAlpha);
+					obs_data_set_int(sourceData, _paramColorName.c_str(), _origColorAlpha);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Reset color \"" + sourceName + "\""));
 				}
@@ -102,21 +102,21 @@ void DAKFilter::SetValue(std::string newValue)
 		} else {
 			if (_paramType == OBS_PROPERTY_COLOR) {
 				if (_invertLogic) {
-					obs_data_set_int(sourceData, _paramName.c_str(), _origColor);
+					obs_data_set_int(sourceData, _paramColorName.c_str(), _origColor);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Reset color \"" + sourceName + "\""));
 				} else {
-					obs_data_set_int(sourceData, _paramName.c_str(), _color);
+					obs_data_set_int(sourceData, _paramColorName.c_str(), _color);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Highlight color \"" + sourceName + "\""));
 				}
 			} else if (_paramType == OBS_PROPERTY_COLOR_ALPHA) {
 				if (_invertLogic) {
-					obs_data_set_int(sourceData, _paramName.c_str(), _origColorAlpha);
+					obs_data_set_int(sourceData, _paramColorName.c_str(), _origColorAlpha);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Reset color \"" + sourceName + "\""));
 				} else {
-					obs_data_set_int(sourceData, _paramName.c_str(), _colorAlpha);
+					obs_data_set_int(sourceData, _paramColorName.c_str(), _colorAlpha);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Highlight color \"" + sourceName + "\""));
 				}
