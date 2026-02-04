@@ -143,6 +143,7 @@ void DAKDataUtils::RemoveFilter(DAKFilter *oldFilter)
 	DAKLogger::instance().emit logMessage(QString::fromStdString("Pre size: " + std::to_string(filters.size())));
 	filters.erase(std::remove(filters.begin(), filters.end(), oldFilter), filters.end());
 	DAKLogger::instance().emit logMessage(QString::fromStdString("Post size: " + std::to_string(filters.size())));
+	_filters[index] = filters;
 }
 
 void DAKDataUtils::UpdateField(uint32_t index, std::string value)
