@@ -45,6 +45,7 @@ public:
 				     obs_data_t *settings);
 	static bool DAKParamChanged(void *data, obs_properties_t *props, obs_property_t *property,
 				    obs_data_t *settings);
+	static bool DAKColorParamChanged(obs_properties_t *props, obs_property_t *property);
 
 private:
 	void _render();
@@ -57,6 +58,8 @@ private:
 	std::string _paramName;
 	std::string _paramColorName;
 	obs_property_type _paramType;
+	obs_property_t *_colorProp;
+	bool _colorActive;
 
 	int _color;
 	int _origColor;

@@ -4,6 +4,9 @@ DAKFilter::DAKFilter(obs_data_t *settings, obs_source_t *source) : _source(sourc
 {
 	_filterType = DAKFilter::DAK_TEXT;
 	_internalValue = "";
+	_origColor = -1;
+	_origColorAlpha = -1;
+	_colorActive = false;
 	Update(this, settings);
 }
 
@@ -54,6 +57,7 @@ void DAKFilter::SetValue(std::string newValue)
 
 	switch (_filterType) {
 	case DAKFilter::DAK_VISIBLE:
+		_colorActive = false;
 		if (_internalValue == "" || _internalValue == "0:00" || _internalValue == ":00" ||
 		    _internalValue == "0.0" || _internalValue == "0") {
 			obs_source_set_enabled(targetSource, _invertLogic);
@@ -69,6 +73,7 @@ void DAKFilter::SetValue(std::string newValue)
 		break;
 
 	case DAKFilter::DAK_TEXT:
+		_colorActive = false;
 		obs_data_set_string(sourceData, _paramName.c_str(), _internalValue.c_str());
 		obs_source_update(targetSource, sourceData);
 		DAKLogger::instance().emit logMessage(
@@ -80,20 +85,24 @@ void DAKFilter::SetValue(std::string newValue)
 		    _internalValue == "0.0" || _internalValue == "0") {
 			if (_paramType == OBS_PROPERTY_COLOR) {
 				if (_invertLogic) {
+					_colorActive = true;
 					obs_data_set_int(sourceData, _paramColorName.c_str(), _color);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Highlight color \"" + sourceName + "\""));
 				} else {
+					_colorActive = false;
 					obs_data_set_int(sourceData, _paramColorName.c_str(), _origColor);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Reset color \"" + sourceName + "\""));
 				}
 			} else if (_paramType == OBS_PROPERTY_COLOR_ALPHA) {
 				if (_invertLogic) {
+					_colorActive = true;
 					obs_data_set_int(sourceData, _paramColorName.c_str(), _colorAlpha);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Highlight color \"" + sourceName + "\""));
 				} else {
+					_colorActive = false;
 					obs_data_set_int(sourceData, _paramColorName.c_str(), _origColorAlpha);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Reset color \"" + sourceName + "\""));
@@ -102,20 +111,24 @@ void DAKFilter::SetValue(std::string newValue)
 		} else {
 			if (_paramType == OBS_PROPERTY_COLOR) {
 				if (_invertLogic) {
+					_colorActive = false;
 					obs_data_set_int(sourceData, _paramColorName.c_str(), _origColor);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Reset color \"" + sourceName + "\""));
 				} else {
+					_colorActive = true;
 					obs_data_set_int(sourceData, _paramColorName.c_str(), _color);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Highlight color \"" + sourceName + "\""));
 				}
 			} else if (_paramType == OBS_PROPERTY_COLOR_ALPHA) {
 				if (_invertLogic) {
+					_colorActive = false;
 					obs_data_set_int(sourceData, _paramColorName.c_str(), _origColorAlpha);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Reset color \"" + sourceName + "\""));
 				} else {
+					_colorActive = true;
 					obs_data_set_int(sourceData, _paramColorName.c_str(), _colorAlpha);
 					DAKLogger::instance().emit logMessage(
 						QString::fromStdString("Highlight color \"" + sourceName + "\""));
@@ -185,18 +198,31 @@ void DAKFilter::Update(obs_data_t *settings)
 	obs_properties_t *sourceProps = obs_source_properties(targetSource);
 	obs_property_t *targetProp = obs_properties_get(sourceProps, _paramColorName.c_str());
 	_paramType = obs_property_get_type(targetProp);
-	obs_properties_destroy(sourceProps);
 
 	if (_filterType == DAKFilter::DAK_COLOR) {
 		obs_data_t *sourceData = obs_source_get_settings(targetSource);
-		_origColor = (int)obs_data_get_int(sourceData, _paramColorName.c_str());
-		_origColorAlpha = (int)obs_data_get_int(sourceData, _paramColorName.c_str());
+
+		if (_origColor == -1)
+			_origColor = (int)obs_data_get_int(sourceData, _paramColorName.c_str());
+		if (_origColorAlpha == -1)
+			_origColorAlpha = (int)obs_data_get_int(sourceData, _paramColorName.c_str());
+
 		obs_data_release(sourceData);
+
+		if (_colorProp != targetProp) {
+			if (_colorProp != nullptr)
+				obs_property_set_modified_callback(_colorProp, NULL);
+
+			_colorProp = targetProp;
+			if (_colorProp != nullptr)
+				obs_property_set_modified_callback(_colorProp, DAKFilter::DAKColorParamChanged);
+		}
 	} else {
-		_origColor = _color;
-		_origColorAlpha = _colorAlpha;
+		_origColor = -1;
+		_origColorAlpha = -1;
 	}
 
+	obs_properties_destroy(sourceProps);
 	DAKDataUtils::AddFilter(this);
 }
 
@@ -376,4 +402,17 @@ bool DAKFilter::DAKParamChanged(void *data, obs_properties_t *props, obs_propert
 	instance->doColorProps(props, paramName);
 
 	return true;
+}
+
+bool DAKFilter::DAKColorParamChanged(obs_properties_t *props, obs_property_t *property, obs_data_t *settings)
+{
+	UNUSED_PARAMETER(property);
+	UNUSED_PARAMETER(props);
+
+	int newColor = (int)obs_data_get_int(settings, _paramColorName.c_str());
+	_origColor = newColor;
+	_origColorAlpha = newColor;
+	SetValue(_internalValue);
+
+	return false;
 }
