@@ -175,9 +175,14 @@ void DAKDataUtils::sync_destroy()
 
 void DAKDataUtils::startSerial(std::string port)
 {
-	// Open and start reading
-	if (serial->open(port, 19200)) {
-		serial->startReading();
+	try {
+		// Open and start reading
+		if (serial->open(port, 19200)) {
+			serial->startReading();
+		}
+	} catch (const std::exception &e) {
+		DAKLogger::instance().emit logMessage(QString::fromStdString("Unable to open port: " + port));
+		obs_log(LOG_ERROR, "Failed to start serial port: %s", e.what());
 	}
 }
 
