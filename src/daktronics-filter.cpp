@@ -2,7 +2,6 @@
 
 DAKFilter::DAKFilter(obs_data_t *settings, obs_source_t *source) : _source(source)
 {
-	_filterType = DAKFilter::DAK_TEXT;
 	_internalValue = "";
 	Update(this, settings);
 }
@@ -76,6 +75,8 @@ void DAKFilter::SetValue(std::string newValue)
 		break;
 
 	case DAKFilter::DAK_COLOR:
+		DAKLogger::instance().emit logMessage(QString::fromStdString("Check color..."));
+
 		if (_internalValue == "" || _internalValue == "0:00" || _internalValue == ":00" ||
 		    _internalValue == "0.0" || _internalValue == "0") {
 			if (_paramType == OBS_PROPERTY_COLOR) {
@@ -196,7 +197,7 @@ void DAKFilter::GetDefaults(obs_data_t *settings)
 {
 	obs_data_set_default_string(settings, "dak_sport_type", "Basketball");
 	obs_data_set_default_int(settings, "dak_field_list", 1);
-	obs_data_set_default_int(settings, "dak_filter_list", DAKFilter::DAK_VISIBLE);
+	obs_data_set_default_int(settings, "dak_filter_list", DAKFilter::DAK_TEXT);
 	obs_data_set_default_bool(settings, "dak_invert_logic", false);
 	obs_data_set_default_string(settings, "dak_param_list", "");
 	obs_data_set_default_string(settings, "dak_parama_list_color", "");
