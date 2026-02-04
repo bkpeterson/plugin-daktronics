@@ -140,7 +140,9 @@ void DAKDataUtils::RemoveFilter(DAKFilter *oldFilter)
 {
 	uint32_t index = oldFilter->GetIndex();
 	std::vector<DAKFilter *> filters = _filters[index];
+	DAKLogger::instance().emit logMessage(QString::fromStdString("Pre size: " + std::to_string(filters.size())));
 	filters.erase(std::remove(filters.begin(), filters.end(), oldFilter), filters.end());
+	DAKLogger::instance().emit logMessage(QString::fromStdString("Post size: " + std::to_string(filters.size())));
 }
 
 void DAKDataUtils::UpdateField(uint32_t index, std::string value)
