@@ -75,7 +75,12 @@ void DAKFilter::SetValue(std::string newValue)
 		break;
 
 	case DAKFilter::DAK_COLOR:
-		DAKLogger::instance().emit logMessage(QString::fromStdString("Check color..."));
+		if (_paramType != OBS_PROPERTY_COLOR && _paramType != OBS_PROPERTY_COLOR_ALPHA) {
+			obs_properties_t *sourceProps = obs_source_properties(targetSource);
+			obs_property_t *targetProp = obs_properties_get(sourceProps, _paramColorName.c_str());
+			_paramType = obs_property_get_type(targetProp);
+			obs_properties_destroy(sourceProps);
+		}
 
 		if (_internalValue == "" || _internalValue == "0:00" || _internalValue == ":00" ||
 		    _internalValue == "0.0" || _internalValue == "0") {
