@@ -187,9 +187,9 @@ void DAKFilter::Update(obs_data_t *settings)
 	_paramType = obs_property_get_type(targetProp);
 	obs_properties_destroy(sourceProps);
 
-	if (_filterType == DAK_COLOR) {
-		_origColor = (int)obs_data_get_int(settings, _paramName.c_str());
-		_origColorAlpha = (int)obs_data_get_int(settings, _paramName.c_str());
+	if (_filterType == DAKFilter::DAK_COLOR) {
+		_origColor = (int)obs_data_get_int(settings, _paramColorName.c_str());
+		_origColorAlpha = (int)obs_data_get_int(settings, _paramColorName.c_str());
 	} else {
 		_origColor = _color;
 		_origColorAlpha = _colorAlpha;
