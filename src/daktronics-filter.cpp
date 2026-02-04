@@ -54,7 +54,6 @@ void DAKFilter::SetValue(std::string newValue)
 
 	switch (_filterType) {
 	case DAKFilter::DAK_VISIBLE:
-		_colorActive = false;
 		if (_internalValue == "" || _internalValue == "0:00" || _internalValue == ":00" ||
 		    _internalValue == "0.0" || _internalValue == "0") {
 			obs_source_set_enabled(targetSource, _invertLogic);
@@ -70,7 +69,6 @@ void DAKFilter::SetValue(std::string newValue)
 		break;
 
 	case DAKFilter::DAK_TEXT:
-		_colorActive = false;
 		obs_data_set_string(sourceData, _paramName.c_str(), _internalValue.c_str());
 		obs_source_update(targetSource, sourceData);
 		DAKLogger::instance().emit logMessage(
@@ -300,7 +298,7 @@ void DAKFilter::doColorProps(obs_properties_t *props, std::string paramName)
 	switch (obs_property_get_type(targetProp)) {
 	case OBS_PROPERTY_COLOR:
 		obs_property_set_visible(color1, true);
-		obs_property_set_visible(color, true);
+		obs_property_set_visible(color2, true);
 		obs_property_set_visible(color_alpha1, false);
 		obs_property_set_visible(color_alpha2, false);
 		break;
